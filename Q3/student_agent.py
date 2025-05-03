@@ -17,6 +17,7 @@ import imageio
 from dmc import make_dmc_env  # 你訓練程式裡定義的環境建構
 from Q3.training.SAC.SAC import PolicyNetwork, MODEL_DIR  # 請替換成你訓練檔案的實際路徑
 
+MODEL_DIR = MODEL_DIR.replace('Q3', '')
 # ———————— 只做 Inference 的 Agent ————————
 class Agent(object):
     def __init__(self):
