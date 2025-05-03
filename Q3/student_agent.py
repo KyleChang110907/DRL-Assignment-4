@@ -14,6 +14,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import imageio
+import os
 from dmc import make_dmc_env  # 你訓練程式裡定義的環境建構
 from Q3.training.SAC.SAC import PolicyNetwork, MODEL_DIR  # 請替換成你訓練檔案的實際路徑
 
@@ -29,7 +30,9 @@ class Agent(object):
         self.policy = PolicyNetwork(obs_dim, act_dim).to(self.device)
 
         # 載入你訓練後最好的 checkpoint
-        ckpt = torch.load(".\\best_actor_backup_3500.pth", map_location=self.device)
+        base_dir = os.path.dirname(__file__)
+        ckpt_path = os.path.join(base_dir, "best_actor_backup_3500.pth")
+        ckpt = torch.load(ckpt_path, map_location=self.device)
         self.policy.load_state_dict(ckpt)
         self.policy.eval()
 
