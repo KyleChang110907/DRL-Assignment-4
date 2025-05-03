@@ -29,7 +29,7 @@ class Agent(object):
         self.policy = PolicyNetwork(obs_dim, act_dim).to(self.device)
 
         # 載入你訓練後最好的 checkpoint
-        ckpt = torch.load(MODEL_DIR+"\\best_actor.pth", map_location=self.device)
+        ckpt = torch.load(".\\best_actor_backup_3500.pth", map_location=self.device)
         self.policy.load_state_dict(ckpt)
         self.policy.eval()
 
