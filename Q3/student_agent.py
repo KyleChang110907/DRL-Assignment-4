@@ -31,7 +31,7 @@ class Agent(object):
 
         # 載入你訓練後最好的 checkpoint
         base_dir = os.path.dirname(__file__)
-        ckpt_path = os.path.join(base_dir, "best_actor_backup_3500.pth")
+        ckpt_path = os.path.join(base_dir, "best_actor_backup.pth")
         ckpt = torch.load(ckpt_path, map_location=self.device)
         self.policy.load_state_dict(ckpt)
         self.policy.eval()
