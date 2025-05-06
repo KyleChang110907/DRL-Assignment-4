@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import imageio
 from dmc import make_dmc_env  # 你訓練程式裡定義的環境建構
-from Q3.training.SAC.SAC import PolicyNetwork, MODEL_DIR  # 請替換成你訓練檔案的實際路徑
+from Q3.training.SAC.SAC_retrain_LR10_4 import PolicyNetwork, MODEL_DIR_after as MODEL_DIR  # 請替換成你訓練檔案的實際路徑
 
 # ———————— 只做 Inference 的 Agent ————————
 class Agent(object):
@@ -36,10 +36,10 @@ if __name__ == "__main__":
     agent = Agent()
 
     scores = []
-    for i in range(1,2):
+    for i in range(1,101):
         # We'll record the first episode as GIF
         frames = []
-        obs, _ = env.reset(seed=42)
+        obs, _ = env.reset()
         done = False
         truncated = False
         ep_ret = 0.0

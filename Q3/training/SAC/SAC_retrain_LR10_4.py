@@ -18,9 +18,9 @@ from dmc import make_dmc_env
 ENV_NAME       = "humanoid-walk"
 GAMMA          = 0.99
 TAU            = 0.005
-LR_PI          = 5e-4
-LR_Q           = 5e-4
-LR_ALPHA       = 5e-4
+LR_PI          = 1e-4
+LR_Q           = 1e-4
+LR_ALPHA       = 1e-4
 BATCH_SIZE     = 256
 BUFFER_LIMIT   = 300000
 TARGET_ENTROPY = None   # if None, will use −action_dim
@@ -31,7 +31,7 @@ STEPS_PER_EP   = 1000
 EVAL_INTERVAL  = 50
 EVAL_EPISODES  = 100
 MODEL_DIR_before      = None #"./Q3/checkpoints/SAC/LR_1e-4_EP10000"
-MODEL_DIR_after      = "./Q3/checkpoints/SAC/LR_5e-4_EP10000_scratch"
+MODEL_DIR_after      = "./Q3/checkpoints/SAC/LR_1e-4_EP10000_scratch_300kB"
 
 os.makedirs(MODEL_DIR_after, exist_ok=True)
 if not MODEL_DIR_before:
@@ -182,6 +182,14 @@ class Agent(object):
         # alpha loss
         loss_alpha = -(self.log_alpha * (logp + self.target_entropy).detach()).mean()
         self.alpha_opt.zero_grad(); loss_alpha.backward(); self.alpha_opt.step()
+
+        # alpha    = self.log_alpha.exp()         # α = e^{logα}
+        # entropy_err = (-logp - self.target_entropy).detach()  # 想讓 entropy ≈ target
+        # loss_alpha  = (alpha * entropy_err).mean()
+
+        self.alpha_opt.zero_grad()
+        loss_alpha.backward()
+        self.alpha_opt.step()
 
         # soft update
         for p_t, p in zip(self.Q1_tgt.parameters(), self.Q1.parameters()):
