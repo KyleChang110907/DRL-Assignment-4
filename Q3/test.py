@@ -18,6 +18,7 @@ class Agent(object):
 
         # 載入你訓練後最好的 checkpoint
         ckpt = torch.load(MODEL_DIR+"/best_actor.pth", map_location=self.device)
+        ckpt = torch.load(MODEL_DIR+"/ep8950_policy.pth", map_location=self.device)
         self.policy.load_state_dict(ckpt)
         self.policy.eval()
 
